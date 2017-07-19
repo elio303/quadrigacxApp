@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AppRegistry, Text, View, StyleSheet } from 'react-native';
+import { AppRegistry, Text, View, StyleSheet, TextInput } from 'react-native';
 
 
 const styles = StyleSheet.create({
@@ -34,6 +34,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 10,
   },
+  textInput: {
+    borderColor: 'gray',
+    height: 20,
+    width: 100,
+    borderWidth: 1,
+    backgroundColor: 'white'
+  }
 });
 
 class CurrentPrice extends Component {
@@ -79,6 +86,7 @@ class Buy extends Component {
     return (
       <View style={styles.subView}>
         <Text>Buy Price: {this.props.data.bid}</Text>
+        <TextInput style={styles.textInput} />
       </View>
     )
   }
