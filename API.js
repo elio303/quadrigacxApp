@@ -35,7 +35,7 @@ module.exports = {
 	getAuthBody() {
 		let nonce = (Math.floor(Date.now() / 1000)).toString()
 		let key = 'lqAnkzhqFE'
-		let secret = '613b8789fa10fb63f29196e50720574a'
+		let secret = '2b9b8a0348a89dab518449792e315cfe'
 		let clientId = '342728'
 		let signature = hmacSHA256(nonce + clientId + key, secret).toString()
 		return {

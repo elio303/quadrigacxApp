@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { AppRegistry, Text, View, StyleSheet, TextInput, Button} from 'react-native'
 
-var api = require('./API.js')
+var api = require('./Api.js')
 
 
 const styles = StyleSheet.create({
@@ -25,7 +25,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'powderblue',
     marginTop: 30,
-    padding: 20
+    padding: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   center: {
     alignItems: 'center'
@@ -44,6 +46,22 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     height: 150
+  },
+  loginInput: {
+    backgroundColor: 'white',
+    borderRadius: 10,
+    alignItems: 'center',
+    margin: 10,
+    padding: 10,
+    borderRadius: 10,
+    height: 50,
+    justifyContent: 'space-between',
+    textAlign: 'center'
+  },
+  horizontalLine: {
+    borderColor: 'ghostwhite',
+    borderWidth: 1,
+    width: 300
   }
 });
 
@@ -102,7 +120,9 @@ class Login extends Component {
     return (
       <View>
         <View style={styles.loginBox}>
-          <Text>Hello</Text>
+          <TextInput style={styles.loginInput} placeholder="API Key" />
+          <View style={styles.horizontalLine} />
+          <TextInput style={styles.loginInput} placeholder="Secret"/>
         </View>
         <View style={styles.subView}>
           <Button title="Log in" onPress={this.login} />
