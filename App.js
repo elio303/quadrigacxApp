@@ -1,5 +1,7 @@
-import React, { Component } from 'react';
-import { AppRegistry, Text, View, StyleSheet, TextInput } from 'react-native';
+import React, { Component } from 'react'
+import { AppRegistry, Text, View, StyleSheet, TextInput, Button} from 'react-native'
+
+var api = require('./API.js')
 
 
 const styles = StyleSheet.create({
@@ -76,6 +78,33 @@ class VolumeAndAverage extends Component {
   }
 }
 
+class Login extends Component {
+
+  constructor(props) {
+    super(props)
+  }
+
+  login() {
+    api.getUserBalance()
+      .then((json) => {
+        console.log(json)
+        return json
+      })
+      .catch(err => {
+        console.error(err)
+        throw err
+      })
+  }
+
+  render() {
+    return (
+      <View style={styles.subView}>
+        <Button title="Log in" onPress={this.login} />
+      </View>
+    )
+  }
+}
+
 class Buy extends Component {
 
   constructor(props) {
@@ -112,7 +141,8 @@ export default class Main extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      isLoading: true
+      isLoading: true,
+      isLoggedIn: false
     }
   }
 
@@ -120,8 +150,7 @@ export default class Main extends Component {
     let self = this
     let book = 'eth_cad'
 
-    fetch('https://api.quadrigacx.com/v2/ticker?book=' + book)
-      .then((res) => res.json())
+    api.getTicker(book)
       .then((json) => {
         self.setState({
           isLoading: false,
@@ -144,14 +173,21 @@ export default class Main extends Component {
         </View>
       ); 
     }
+    if (this.state.isLoggedIn) {
+      return (
+        <View style={styles.mainView}>
+          <CurrentPrice data={this.state.data} />
+          <VolumeAndAverage data={this.state.data} />
+          <Buy data={this.state.data} />
+          <Sell data={this.state.data} />
+        </View>
+      );
+    }
     return (
       <View style={styles.mainView}>
-        <CurrentPrice data={this.state.data} />
-        <VolumeAndAverage data={this.state.data} />
-        <Buy data={this.state.data} />
-        <Sell data={this.state.data} />
+        <Login />
       </View>
-    );
+    )
   }
 }
 
