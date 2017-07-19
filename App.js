@@ -1,31 +1,27 @@
 import React, { Component } from 'react';
-import { AppRegistry, Text, View, AsyncStorage } from 'react-native';
+import { AppRegistry, Text, View } from 'react-native';
 
 var CurrentPrice = React.createClass({
 
-  getInitialState() {
-    return {
-      isLoading: true,
-      data: {}
-    };
-  },
+  render() {
+    let self = this
 
-  componentWillMount() {
+    self.state = {}
+    self.state.loading = true
+
     let book = 'eth_cad'
     fetch('https://api.quadrigacx.com/v2/ticker?book=' + book)
-        .then((res) => {res.json()})
+        .then((res) => res.json())
         .then((json) => {
-          AsyncStorage.setState({
-            isLoading: false,
-            data: json
-          })
+          console.log(json)
+          self.state.isLoading = false
+          self.state.data = json
         })
-  },
 
-  render() {
-    if (this.state.isLoading) {
+    if (this.state.loading) {
       return (<Text>Loading...</Text>); 
     }
+    console.log(this.state.data)
     return (<Text>{this.state.data}</Text>)
   }
 })
