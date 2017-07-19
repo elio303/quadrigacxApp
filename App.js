@@ -6,14 +6,15 @@ var api = require('./API.js')
 
 const styles = StyleSheet.create({
   loading: {},
-  priceView: {
-    backgroundColor: 'skyblue',
-    margin: 10,
-    padding: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
+
+  priceView: Object.assign({}, 
+    {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+    }, 
+    this.subView
+  ),
+
   averageView: {
     backgroundColor: 'skyblue',
     margin: 10,
@@ -31,17 +32,18 @@ const styles = StyleSheet.create({
   },
   subView: {
     backgroundColor: 'skyblue',
+    alignItems: 'center',
     margin: 10,
     padding: 10,
-    alignItems: 'center',
     borderRadius: 10,
   },
-  textInput: {
-    borderColor: 'gray',
-    height: 20,
-    width: 100,
-    borderWidth: 1,
-    backgroundColor: 'white'
+  loginBox: {
+    backgroundColor: 'white',
+    alignItems: 'center',
+    margin: 10,
+    padding: 10,
+    borderRadius: 10,
+    height: 150
   }
 });
 
@@ -98,8 +100,13 @@ class Login extends Component {
 
   render() {
     return (
-      <View style={styles.subView}>
-        <Button title="Log in" onPress={this.login} />
+      <View>
+        <View style={styles.loginBox}>
+          <Text>Hello</Text>
+        </View>
+        <View style={styles.subView}>
+          <Button title="Log in" onPress={this.login} />
+        </View>
       </View>
     )
   }

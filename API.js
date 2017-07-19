@@ -46,7 +46,6 @@ module.exports = {
 	},
 
 	getTicker(book) {
-		console.log(book)
 		return this.get('https://api.quadrigacx.com/v2/ticker', {
 			book
 		})
