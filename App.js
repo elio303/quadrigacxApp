@@ -8,7 +8,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'skyblue',
     margin: 10,
     padding: 10,
-    alignItems: 'center'
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  averageView: {
+    backgroundColor: 'skyblue',
+    margin: 10,
+    padding: 10,
+    alignItems: 'center',
   },
   mainView: {
     flex: 1,
@@ -24,7 +32,8 @@ const styles = StyleSheet.create({
     margin: 10,
     padding: 10,
     alignItems: 'center',
-  }
+    borderRadius: 10,
+  },
 });
 
 class CurrentPrice extends Component {
@@ -35,10 +44,26 @@ class CurrentPrice extends Component {
 
   render() {
     return (
-      <View style={styles.subView}>
+      <View style={styles.priceView}>
         <Text>Last: {this.props.data.last}</Text>
         <Text>High: {this.props.data.high}</Text>
         <Text>Low: {this.props.data.low}</Text>
+      </View>
+    )
+  }
+}
+
+class VolumeAndAverage extends Component {
+
+  constructor(props) {
+    super(props)
+  }
+
+  render() {
+    return (
+      <View style={styles.averageView}>
+        <Text>Average: {this.props.data.vwap}</Text>
+        <Text>Volume: {this.props.data.volume}</Text>
       </View>
     )
   }
@@ -86,6 +111,7 @@ export default class Main extends Component {
   componentWillMount() {
     let self = this
     let book = 'eth_cad'
+
     fetch('https://api.quadrigacx.com/v2/ticker?book=' + book)
       .then((res) => res.json())
       .then((json) => {
@@ -93,12 +119,14 @@ export default class Main extends Component {
           isLoading: false,
           data: json
         })
+        console.log(json)
       })
       .catch(err => {
         console.error(err)
         throw err
-      }) 
-  }
+      })
+    }
+  
 
   render() {
     if (this.state.isLoading) {
@@ -111,6 +139,7 @@ export default class Main extends Component {
     return (
       <View style={styles.mainView}>
         <CurrentPrice data={this.state.data} />
+        <VolumeAndAverage data={this.state.data} />
         <Buy data={this.state.data} />
         <Sell data={this.state.data} />
       </View>
