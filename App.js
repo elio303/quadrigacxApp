@@ -1,21 +1,11 @@
 // Vendor
 import React, { Component } from 'react'
 import { AppRegistry, Text, View, StyleSheet, TextInput, Button} from 'react-native'
-import { createStore } from 'redux'
+import AppStore from './Stores/AppStore'
 
 // Custom
 import Login from './Components/Login/Login'
 import Api from './Services/Api.js'
-import { addApiKey, addSecret } from './Stores/Auth/AuthActions'
-import AppReducers from './Stores/AppReducers'
-
-// Setuo Store
-let store = createStore(AppReducers)
-console.log(store.getState()) // Inital Store
-
-let unsubscribe = store.subscribe(() =>
-  console.log(store.getState()) // Updated Store
-)
 
 // Styles
 const styles = StyleSheet.create({
@@ -38,7 +28,8 @@ export default class Main extends Component {
     super(props)
     this.state = {
       isLoading: true,
-      isLoggedIn: false
+      isLoggedIn: false,
+      store: AppStore
     }
   }
 
@@ -59,7 +50,7 @@ export default class Main extends Component {
   render() {
     return (
       <View style={styles.mainView}>
-        <Login store={store} />
+        <Login store={this.state.store} />
       </View>
     )
   }

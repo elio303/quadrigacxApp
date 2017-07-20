@@ -1,4 +1,5 @@
 import hmacSHA256 from 'crypto-js/hmac-sha256'
+import AppStore from '../Stores/AppStore'
 
 module.exports = {
 
@@ -34,8 +35,9 @@ module.exports = {
 
 	getAuthBody() {
 		let nonce = (Math.floor(Date.now() / 1000)).toString()
-		let key = 'lqAnkzhqFE'
-		let secret = '2b9b8a0348a89dab518449792e315cfe'
+		let authStore = AppStore.getState().AuthStore
+		let key = authStore.apiKey
+		let secret = authStore.secret
 		let clientId = '342728'
 		let signature = hmacSHA256(nonce + clientId + key, secret).toString()
 		return {

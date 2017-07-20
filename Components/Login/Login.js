@@ -51,25 +51,21 @@ export default class Login extends Component {
 
 	constructor(props) {
 		super(props)
+		let unsubscribe = this.props.store.subscribe(() =>
+			console.log(this.props.store.getState()) // Updated Store
+		)
+	}
 
-		this.state = {
-			apiKey: '',
-			secret: ''
-		}
+	handleApiKeyChange(e) {
+		this.props.store.dispatch(addApiKey(e.nativeEvent.text))
+
+	}
+
+	handleSecretChange(e) {
+		this.props.store.dispatch(addSecret(e.nativeEvent.text))
 	}
 
 	login() {
-		// // Setuo Store
-		// let store = createStore(AppReducers)
-		// console.log(store.getState()) // Inital Store
-
-		// let unsubscribe = store.subscribe(() =>
-		// 	console.log(store.getState()) // Updated Store
-		// )
-
-		// store.dispatch(addApiKey(this.state.apiKey))
-		// store.dispatch(addSecret(this.state.secret))
-		console.log(this.state)
 
 		Api.getUserBalance()
 			.then((json) => {
@@ -80,6 +76,7 @@ export default class Login extends Component {
 				console.error(err)
 				throw err
 			})
+
 	}
 
   	render() {
@@ -89,17 +86,16 @@ export default class Login extends Component {
 	        		<View style={styles.loginBox}>
 						<TextInput 
 							style={styles.loginInput} 
-							placeholder="API Key" 
-							onChangeText={(apiKey) => this.setState({apiKey})}
-							value={this.state.apiKey} />
+							placeholder='API Key'
+							onChange={(e) => this.handleApiKeyChange(e)} />
 
 						<HorizontalLine />
 
 						<TextInput 
 							style={styles.loginInput} 
-							placeholder="Secret" 
-							secureTextEntry
-							value={this.state.secret} />
+							placeholder='Secret'
+							secureTextEntry 
+							onChange={(e) => this.handleSecretChange(e)} />
 	        		</View>
 	        		<View style={styles.buttonView}>
 						<Button color="white" title="Log in" onPress={this.login} />
