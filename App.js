@@ -1,23 +1,37 @@
+// Vendor
 import React, { Component } from 'react'
 import { AppRegistry, Text, View, StyleSheet, TextInput, Button} from 'react-native'
+import { createStore } from 'redux'
+
+// Custom
 import Login from './Components/Login/Login'
+import Api from './Services/Api.js'
+import { addApiKey, addSecret } from './Stores/Auth/AuthActions'
+import AppReducers from './Stores/AppReducers'
 
-var api = require('./Api.js')
+// Setuo Store
+let store = createStore(AppReducers)
+console.log(store.getState()) // Inital Store
 
+let unsubscribe = store.subscribe(() =>
+  console.log(store.getState()) // Updated Store
+)
 
+// Styles
 const styles = StyleSheet.create({
 
   mainView: {
     flex: 1,
-    backgroundColor: '#3b5998',
-    marginTop: 30,
     padding: 20,
+    marginTop: 30,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#3b5998',
   },
-  
+
 });
 
+// Main App Component
 export default class Main extends Component {
 
   constructor(props) {
@@ -29,15 +43,10 @@ export default class Main extends Component {
   }
 
   componentWillMount() {
-    let self = this
     let book = 'eth_cad'
 
-    api.getTicker(book)
+    Api.getTicker(book)
       .then((json) => {
-        self.setState({
-          isLoading: false,
-          data: json
-        })
         console.log(json)
       })
       .catch(err => {
@@ -50,11 +59,11 @@ export default class Main extends Component {
   render() {
     return (
       <View style={styles.mainView}>
-        <Login />
+        <Login store={store} />
       </View>
     )
   }
 }
 
 // skip this line if using Create React Native App
-AppRegistry.registerComponent('AwesomeProject', () => Main);
+// AppRegistry.registerComponent('AwesomeProject', () => Main);
