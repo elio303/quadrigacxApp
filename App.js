@@ -27,30 +27,24 @@ export default class Main extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      isLoading: true,
-      isLoggedIn: false,
-      store: AppStore
+      isLoading: false,
+      isAuthenticated: !AppStore.getState().ApiStore.userBalanceResponse.error
     }
+
+    // Enable this for debugging
+    
+    console.log(this.state)
+
+    AppStore.subscribe(() => {
+     console.log(AppStore.getState())
+    })
+
   }
-
-  componentWillMount() {
-    let book = 'eth_cad'
-
-    Api.getTicker(book)
-      .then((json) => {
-        console.log(json)
-      })
-      .catch(err => {
-        console.error(err)
-        throw err
-      })
-    }
-  
 
   render() {
     return (
       <View style={styles.mainView}>
-        <Login store={this.state.store} />
+        <Login />
       </View>
     )
   }

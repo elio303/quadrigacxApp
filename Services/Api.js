@@ -1,5 +1,7 @@
 import hmacSHA256 from 'crypto-js/hmac-sha256'
 import AppStore from '../Stores/AppStore'
+import { addUserBalanceResponse } from '../Stores/Api/ApiActions'
+
 
 module.exports = {
 
@@ -38,7 +40,7 @@ module.exports = {
 		let authStore = AppStore.getState().AuthStore
 		let key = authStore.apiKey
 		let secret = authStore.secret
-		let clientId = '342728'
+		let clientId = authStore.clientID
 		let signature = hmacSHA256(nonce + clientId + key, secret).toString()
 		return {
 		  key: key,
@@ -73,6 +75,12 @@ module.exports = {
 
 	getUserBalance() {
 		return this.authPost('https://api.quadrigacx.com/v2/balance', {})
+			.then((response) => {
+				AppStore.dispatch(addUserBalanceResponse(response))
+			})
+			.catch(err => {
+				throw err
+			})
 	},
 
 	getUserTransactions(offset, limit, sort, book) {

@@ -1,13 +1,13 @@
 // Vendor
+import _ from 'lodash'
 import React, { Component } from 'react'
 import { AppRegistry, View, StyleSheet, Text, TextInput, Button} from 'react-native'
-import AppReducers from '../../Stores/AppReducers'
-import { createStore } from 'redux'
+import AppStore from './../../Stores/AppStore'
 
 // Custom
-import HorizontalLine from '../General/HorizontalLine'
 import Api from '../../Services/Api.js'
-import { addApiKey, addSecret } from '../../Stores/Auth/AuthActions'
+import HorizontalLine from '../General/HorizontalLine'
+import { addApiKey, addSecret, addClientID } from '../../Stores/Auth/AuthActions'
 
 const styles = StyleSheet.create({
 
@@ -24,16 +24,16 @@ const styles = StyleSheet.create({
     margin: 10,
     padding: 10,
     borderRadius: 10,
-    height: 150,
+    height: 200
   },
   loginInput: {
+  	flex: 1,
     backgroundColor: 'white',
     borderRadius: 10,
     alignItems: 'center',
     margin: 10,
     padding: 10,
     borderRadius: 10,
-    height: 50,
     justifyContent: 'space-between',
     textAlign: 'center'
   },
@@ -51,32 +51,40 @@ export default class Login extends Component {
 
 	constructor(props) {
 		super(props)
-		let unsubscribe = this.props.store.subscribe(() =>
-			console.log(this.props.store.getState()) // Updated Store
-		)
+		this.state = this.getAuthStore()
 	}
 
-	handleApiKeyChange(e) {
-		this.props.store.dispatch(addApiKey(e.nativeEvent.text))
-
+	getApiStore() {
+		return AppStore.getState().ApiStore
 	}
 
-	handleSecretChange(e) {
-		this.props.store.dispatch(addSecret(e.nativeEvent.text))
+	getAuthStore() {
+		return AppStore.getState().AuthStore
+	}
+
+	handleApiKeyChange({ nativeEvent }) {
+		this.changeState(addApiKey, 'apiKey', nativeEvent.text)
+	}
+
+	handleSecretChange({ nativeEvent }) {
+		this.changeState(addSecret, 'secret', nativeEvent.text)
+	}
+
+	handleClientIDChange({ nativeEvent }) {
+		this.changeState(addClientID, 'clientID', nativeEvent.text)
+	}
+
+	changeState(action, key, value) {
+		let newState = {}
+		newState[key] = value
+		AppStore.dispatch(action(value))
+		this.setState(previousState => {
+			return _.assign({}, previousState, newState)
+		})
 	}
 
 	login() {
-
 		Api.getUserBalance()
-			.then((json) => {
-				console.log(json)
-				return json
-			})
-			.catch(err => {
-				console.error(err)
-				throw err
-			})
-
 	}
 
   	render() {
@@ -84,7 +92,17 @@ export default class Login extends Component {
 	      	<View>
 	        	<Text style={styles.loginTitle}>QuadrigaCX</Text>
 	        		<View style={styles.loginBox}>
+
 						<TextInput 
+							value={this.state.clientID}
+							style={styles.loginInput} 
+							placeholder='Client ID'
+							onChange={(e) => this.handleClientIDChange(e)} />
+
+						<HorizontalLine />
+
+						<TextInput 
+							value={this.state.apiKey}
 							style={styles.loginInput} 
 							placeholder='API Key'
 							onChange={(e) => this.handleApiKeyChange(e)} />
@@ -92,6 +110,7 @@ export default class Login extends Component {
 						<HorizontalLine />
 
 						<TextInput 
+							value={this.state.secret}
 							style={styles.loginInput} 
 							placeholder='Secret'
 							secureTextEntry 
