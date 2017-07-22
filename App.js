@@ -2,6 +2,7 @@
 import React, { Component } from 'react'
 import { AppRegistry, Text, View, StyleSheet, TextInput, Button} from 'react-native'
 import AppStore from './Stores/AppStore'
+import StoreHelpers from './Stores/StoreHelpers'
 
 // Custom
 import Login from './Components/Login/Login'
@@ -28,7 +29,7 @@ export default class Main extends Component {
     super(props)
     this.state = {
       isLoading: false,
-      isAuthenticated: !AppStore.getState().ApiStore.userBalanceResponse.error
+      isAuthenticated: !StoreHelpers.getApiStore().userBalanceResponse.error // Computed property from store
     }
 
     // Enable this for debugging

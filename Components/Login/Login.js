@@ -3,6 +3,7 @@ import _ from 'lodash'
 import React, { Component } from 'react'
 import { AppRegistry, View, StyleSheet, Text, TextInput, Button} from 'react-native'
 import AppStore from './../../Stores/AppStore'
+import StoreHelpers from './../../Stores/StoreHelpers'
 
 // Custom
 import Api from '../../Services/Api.js'
@@ -51,15 +52,7 @@ export default class Login extends Component {
 
 	constructor(props) {
 		super(props)
-		this.state = this.getAuthStore()
-	}
-
-	getApiStore() {
-		return AppStore.getState().ApiStore
-	}
-
-	getAuthStore() {
-		return AppStore.getState().AuthStore
+		this.state = StoreHelpers.getAuthStore()
 	}
 
 	handleApiKeyChange({ nativeEvent }) {
