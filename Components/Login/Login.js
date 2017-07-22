@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
 
 export default class Login extends Component {
 
+	// Logic
 	constructor(props) {
 		super(props)
 		this.state = StoreHelpers.getAuthStore()
@@ -80,41 +81,61 @@ export default class Login extends Component {
 		Api.getUserBalance()
 	}
 
+
+
+	// Templating
+	LoginButton() {
+		return (
+			<View style={styles.buttonView}>
+				<Button color="white" title="Log in" onPress={this.login} />
+	        </View>
+		)
+	}
+
+	LoginForm() {
+		return (
+			<View style={styles.loginBox}>
+
+				{this.FormInput(this.state.clientID, 'Client ID', (e) => this.handleClientIDChange(e))}
+
+				<HorizontalLine />
+
+				{this.FormInput(this.state.apiKey, 'API Key', (e) => this.handleApiKeyChange(e))}
+
+				<HorizontalLine />
+
+				{this.FormInput(this.state.secret, 'Secret', (e) => this.handleSecretChange(e))}
+
+    		</View>
+		)
+	}
+
+	FormInput(value, placeholder, onChange) {
+		return (
+			<TextInput 
+			value={value}
+			style={styles.loginInput} 
+			placeholder= {placeholder}
+			onChange={onChange} />
+		)
+	}
+
+	title(title) {
+		return (
+			<Text style={styles.loginTitle}>{title}</Text>
+		)
+	}
+
   	render() {
 	    return (
 	      	<View>
-	        	<Text style={styles.loginTitle}>QuadrigaCX</Text>
-	        		<View style={styles.loginBox}>
-
-						<TextInput 
-							value={this.state.clientID}
-							style={styles.loginInput} 
-							placeholder='Client ID'
-							onChange={(e) => this.handleClientIDChange(e)} />
-
-						<HorizontalLine />
-
-						<TextInput 
-							value={this.state.apiKey}
-							style={styles.loginInput} 
-							placeholder='API Key'
-							onChange={(e) => this.handleApiKeyChange(e)} />
-
-						<HorizontalLine />
-
-						<TextInput 
-							value={this.state.secret}
-							style={styles.loginInput} 
-							placeholder='Secret'
-							secureTextEntry 
-							onChange={(e) => this.handleSecretChange(e)} />
-	        		</View>
-	        		<View style={styles.buttonView}>
-						<Button color="white" title="Log in" onPress={this.login} />
-			        </View>
+	        	{this.title('QuadrigaCX')}
+        		{this.LoginForm()}
+        		{this.LoginButton()}
 	      	</View>
 		)
   	}
+  	
 }
 
 AppRegistry.registerComponent('AwesomeProject', () => Login);

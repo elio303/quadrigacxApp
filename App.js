@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import { AppRegistry, Text, View, StyleSheet, TextInput, Button} from 'react-native'
 import AppStore from './Stores/AppStore'
 import StoreHelpers from './Stores/StoreHelpers'
+import _ from 'lodash'
 
 // Custom
 import Login from './Components/Login/Login'
@@ -29,23 +30,43 @@ export default class Main extends Component {
     super(props)
     this.state = {
       isLoading: false,
-      isAuthenticated: !StoreHelpers.getApiStore().userBalanceResponse.error // Computed property from store
+      isAuthenticated: false
     }
 
-    // Enable this for debugging
+    // Enable logs for debugging
     
     console.log(this.state)
 
     AppStore.subscribe(() => {
-     console.log(AppStore.getState())
+      this.updateIsAuthenticated()
+
+      console.log(AppStore.getState())
+      console.log(this.state)
     })
 
+  }
+
+  updateIsAuthenticated() {
+    this.setState((previousState) => {
+      return _.assign({}, previousState, {
+        isAuthenticated: !StoreHelpers.getApiStore().userBalanceResponse.error, // Computed property from store
+      })
+    })
+  }
+
+  selectComponentToRender() {
+    if (!this.state.isAuthenticated) {
+      return (
+        <Login />
+      )
+    }
+    return <View></View>
   }
 
   render() {
     return (
       <View style={styles.mainView}>
-        <Login />
+        {this.selectComponentToRender()}
       </View>
     )
   }
