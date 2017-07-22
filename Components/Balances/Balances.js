@@ -1,19 +1,33 @@
+// Vendor
 import React, { Component } from 'react'
 import { AppRegistry, View, StyleSheet, Text} from 'react-native'
+
+// Custom
 import StoreHelpers from '../../Stores/StoreHelpers'
+import HorizontalLine from '../General/HorizontalLine'
 
 const styles = StyleSheet.create({
 	balancesBox: {
-	    margin: 10,
+	    margin: 20,
     	padding: 10,
     	borderRadius: 10,
     	backgroundColor: 'white',
 	    justifyContent: 'space-between',
-	    flexDirection: 'row',
 	},
+	balanceView: {
+	    flexDirection: 'row',
+	    margin: 5,
+	},
+	title: {
+		fontSize: 20,
+	},
+	titleView: {
+		margin: 5,
+		alignItems: 'center',
+	}
 })
 
-export default class HorizontalLine extends Component{
+export default class Balances extends Component{
 
 	currencies = [
 		'BTC',
@@ -28,6 +42,12 @@ export default class HorizontalLine extends Component{
 	getBalance(currency) {
 		let lowerCaseCurrency = currency.toLowerCase()
 		return StoreHelpers.getApiStore().userBalanceResponse[lowerCaseCurrency + '_balance']
+	}
+
+	Title() {
+		return (
+			<Text style={styles.title}>Balances</Text>
+		)
 	}
 
 	Balance(currency, context) {
@@ -65,8 +85,14 @@ export default class HorizontalLine extends Component{
 	render() {
 		return (
 			<View style={styles.balancesBox}>
-				{this.Currencies()}
-				{this.Balances()}
+				<View style={styles.titleView}>
+					{this.Title()}
+				</View>
+				<HorizontalLine />
+				<View style={styles.balanceView}>
+					{this.Currencies()}
+					{this.Balances()}
+				</View>
 			</View>
 		)
 	}

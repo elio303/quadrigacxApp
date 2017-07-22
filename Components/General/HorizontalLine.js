@@ -4,8 +4,8 @@ import { AppRegistry, View, StyleSheet} from 'react-native'
 const styles = StyleSheet.create({
 	horizontalLine: {
 	    borderColor: 'ghostwhite',
-	    borderWidth: 1,
-	    width: 300
+	    borderWidth: 0.5,
+	    alignSelf: 'stretch',
 	},
 })
 
