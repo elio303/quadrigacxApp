@@ -1,13 +1,22 @@
 // Vendor
-import React, { Component } from 'react'
-import { AppRegistry, Text, View, StyleSheet, TextInput, Button} from 'react-native'
-import AppStore from './Stores/AppStore'
-import StoreHelpers from './Stores/StoreHelpers'
 import _ from 'lodash'
+import React, { Component } from 'react'
+import { 
+  AppRegistry, 
+  Text, 
+  View, 
+  StyleSheet, 
+  TextInput, 
+  Button, 
+  ActivityIndicator
+} from 'react-native'
 
 // Custom
-import Login from './Components/Login/Login'
 import Api from './Services/Api.js'
+import AppStore from './Stores/AppStore'
+import Login from './Components/Login/Login'
+import StoreHelpers from './Stores/StoreHelpers'
+import Balances from './Components/Balances/Balances'
 
 // Styles
 const styles = StyleSheet.create({
@@ -19,6 +28,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#3b5998',
+  },
+
+  spinner: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 
 });
@@ -38,29 +52,62 @@ export default class Main extends Component {
     console.log(this.state)
 
     AppStore.subscribe(() => {
+
       this.updateIsAuthenticated()
 
       console.log(AppStore.getState())
       console.log(this.state)
+
     })
 
   }
 
   updateIsAuthenticated() {
-    this.setState((previousState) => {
-      return _.assign({}, previousState, {
-        isAuthenticated: !StoreHelpers.getApiStore().userBalanceResponse.error, // Computed property from store
-      })
+    this.changeState({
+      isAuthenticated: StoreHelpers.isAuthenticated()
     })
   }
 
+  setIsLoading(bool) {
+    this.changeState({
+      isLoading: bool
+    })
+  }
+
+  changeState(object) {
+    this.setState((previousState) => {
+      return _.assign({}, previousState, object)
+    })
+  }
+
+  Spinner() {
+    return (
+      <ActivityIndicator
+      animating={this.state.isLoading}
+      style={styles.spinner}
+      size="large" />
+    )
+  }
+
   selectComponentToRender() {
+    if (this.state.isLoading) {
+      return (
+        <View>
+          {this.Spinner()}
+        </View>
+      )
+    }
+
     if (!this.state.isAuthenticated) {
       return (
         <Login />
       )
     }
-    return <View></View>
+    return (
+      <View>
+        <Balances />
+      </View>
+    )
   }
 
   render() {
@@ -71,6 +118,3 @@ export default class Main extends Component {
     )
   }
 }
-
-// skip this line if using Create React Native App
-// AppRegistry.registerComponent('AwesomeProject', () => Main);

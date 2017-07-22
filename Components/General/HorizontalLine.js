@@ -14,5 +14,3 @@ export default class HorizontalLine extends Component{
 		return <View style={styles.horizontalLine} />
 	}
 }
-
-AppRegistry.registerComponent('AwesomeProject', () => HorizontalLine);

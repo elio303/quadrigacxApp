@@ -1,4 +1,7 @@
+// Vendor
 import hmacSHA256 from 'crypto-js/hmac-sha256'
+
+// Custom
 import AppStore from '../Stores/AppStore'
 import { addUserBalanceResponse } from '../Stores/Api/ApiActions'
 

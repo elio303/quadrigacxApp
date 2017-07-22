@@ -1,13 +1,13 @@
 // Vendor
 import _ from 'lodash'
 import React, { Component } from 'react'
-import { AppRegistry, View, StyleSheet, Text, TextInput, Button} from 'react-native'
-import AppStore from './../../Stores/AppStore'
-import StoreHelpers from './../../Stores/StoreHelpers'
+import { AppRegistry, View, StyleSheet, Text, TextInput, Button, Alert} from 'react-native'
 
 // Custom
 import Api from '../../Services/Api.js'
+import AppStore from '../../Stores/AppStore'
 import HorizontalLine from '../General/HorizontalLine'
+import StoreHelpers from '../../Stores/StoreHelpers'
 import { addApiKey, addSecret, addClientID } from '../../Stores/Auth/AuthActions'
 
 const styles = StyleSheet.create({
@@ -78,7 +78,17 @@ export default class Login extends Component {
 	}
 
 	login() {
-		Api.getUserBalance()
+		Api.getUserBalance().then(() => {
+			if (!StoreHelpers.isAuthenticated()) {
+				let message = _.get(StoreHelpers.getApiStore(), 'userBalanceResponse.error.message');
+				Alert.alert(
+			  		'Error',
+			  		message,
+					{text: 'OK'},
+				  	{ cancelable: false }
+				)
+			}
+		})
 	}
 
 
@@ -135,7 +145,7 @@ export default class Login extends Component {
 	      	</View>
 		)
   	}
-  	
+
 }
 
 AppRegistry.registerComponent('AwesomeProject', () => Login);
