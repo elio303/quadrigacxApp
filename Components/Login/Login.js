@@ -16,33 +16,28 @@ import {
 } from '../../Stores/Auth/AuthActions'
 
 const styles = StyleSheet.create({
-
-  buttonView: {
-    backgroundColor: '#355088',
-    alignItems: 'center',
-    margin: 10,
-    padding: 10,
-    borderRadius: 10,
-  },
-  loginInput: {
-  	flex: 1,
-    backgroundColor: 'white',
-    borderRadius: 10,
-    alignItems: 'center',
-    margin: 10,
-    padding: 10,
-    borderRadius: 10,
-    justifyContent: 'space-between',
-    textAlign: 'center'
-  },
-  loginTitle: {
-    fontSize: 50,
-    margin: 10,
-    color: 'white',
-    alignItems: 'center',
-    justifyContent: 'center',
-    textAlign: 'center'
-  },
+	loginBox: {
+		maxHeight: 250,
+	},
+	buttonView: {
+		backgroundColor: '#355088',
+		alignItems: 'center',
+		margin: 10,
+		padding: 10,
+		borderRadius: 10,
+	},
+	loginInput: {
+		flex: 1,
+		textAlign: 'center'
+	},
+	loginTitle: {
+		fontSize: 40,
+		margin: 10,
+		color: 'white',
+		alignItems: 'center',
+		justifyContent: 'center',
+		textAlign: 'center'
+	},
 });
 
 export default class Login extends Component {
@@ -101,7 +96,7 @@ export default class Login extends Component {
 
 	LoginForm() {
 		return (
-			<View style={GlobalStyles.box}>
+			<View style={[GlobalStyles.box, styles.loginBox]}>
 
 				{this.FormInput(this.state.clientID, 'Client ID', (e) => this.handleClientIDChange(e))}
 
@@ -121,7 +116,7 @@ export default class Login extends Component {
 		return (
 			<TextInput 
 			value={value}
-			style={styles.loginInput} 
+			style={[GlobalStyles.box, styles.loginInput]} 
 			placeholder= {placeholder}
 			onChange={onChange} />
 		)

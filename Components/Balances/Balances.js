@@ -9,6 +9,9 @@ import StoreHelpers from '../../Stores/StoreHelpers'
 import HorizontalLine from '../General/HorizontalLine'
 
 const styles = StyleSheet.create({
+	balanceBox: {
+		maxHeight: 180,
+	},
 	balanceView: {
 	    flexDirection: 'row',
 	    margin: 5,
@@ -102,7 +105,7 @@ export default class Balances extends Component{
 
 	render() {
 		return (
-			<View style={GlobalStyles.box}>
+			<View style={[GlobalStyles.box, styles.balanceBox]}>
 				<View style={styles.titleView}>
 					{this.Title()}
 				</View>
