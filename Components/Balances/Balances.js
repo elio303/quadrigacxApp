@@ -1,19 +1,14 @@
 // Vendor
+import GlobalStyles from '../../Styles/GlobalStyles'
 import React, { Component } from 'react'
 import { AppRegistry, View, StyleSheet, Text} from 'react-native'
 
 // Custom
+import AppStore from '../../Stores/AppStore'
 import StoreHelpers from '../../Stores/StoreHelpers'
 import HorizontalLine from '../General/HorizontalLine'
 
 const styles = StyleSheet.create({
-	balancesBox: {
-	    margin: 20,
-    	padding: 10,
-    	borderRadius: 10,
-    	backgroundColor: 'white',
-	    justifyContent: 'space-between',
-	},
 	balanceView: {
 	    flexDirection: 'row',
 	    margin: 5,
@@ -29,6 +24,18 @@ const styles = StyleSheet.create({
 
 export default class Balances extends Component{
 
+	// Logic
+	constructor(props) {
+		super(props)
+		this.state = {
+			balances: StoreHelpers.getApiStore().userBalanceResponse,
+		}
+
+		AppStore.subscribe(() => {
+			this.updateBalances()
+		})
+	}
+
 	currencies = [
 		'BTC',
 		'LTC',
@@ -39,10 +46,21 @@ export default class Balances extends Component{
 		'XAU',
 	]
 
+	updateBalances() {
+		this.setState(previousState => {
+			return _.assign({}, previousState, {
+				balances: StoreHelpers.getApiStore().userBalanceResponse,
+			})
+		})
+	}
+
 	getBalance(currency) {
 		let lowerCaseCurrency = currency.toLowerCase()
-		return StoreHelpers.getApiStore().userBalanceResponse[lowerCaseCurrency + '_balance']
+		return this.state.balances[lowerCaseCurrency + '_balance']
 	}
+
+
+	// Templating
 
 	Title() {
 		return (
@@ -84,7 +102,7 @@ export default class Balances extends Component{
 
 	render() {
 		return (
-			<View style={styles.balancesBox}>
+			<View style={GlobalStyles.box}>
 				<View style={styles.titleView}>
 					{this.Title()}
 				</View>

@@ -6,9 +6,14 @@ import { AppRegistry, View, StyleSheet, Text, TextInput, Button, Alert} from 're
 // Custom
 import Api from '../../Services/Api.js'
 import AppStore from '../../Stores/AppStore'
-import HorizontalLine from '../General/HorizontalLine'
 import StoreHelpers from '../../Stores/StoreHelpers'
-import { addApiKey, addSecret, addClientID } from '../../Stores/Auth/AuthActions'
+import GlobalStyles from '../../Styles/GlobalStyles'
+import HorizontalLine from '../General/HorizontalLine'
+import { 
+	addApiKey, 
+	addSecret, 
+	addClientID 
+} from '../../Stores/Auth/AuthActions'
 
 const styles = StyleSheet.create({
 
@@ -18,14 +23,6 @@ const styles = StyleSheet.create({
     margin: 10,
     padding: 10,
     borderRadius: 10,
-  },
-  loginBox: {
-    backgroundColor: 'white',
-    alignItems: 'center',
-    margin: 10,
-    padding: 10,
-    borderRadius: 10,
-    height: 200
   },
   loginInput: {
   	flex: 1,
@@ -104,7 +101,7 @@ export default class Login extends Component {
 
 	LoginForm() {
 		return (
-			<View style={styles.loginBox}>
+			<View style={GlobalStyles.box}>
 
 				{this.FormInput(this.state.clientID, 'Client ID', (e) => this.handleClientIDChange(e))}
 

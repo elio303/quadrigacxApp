@@ -1,4 +1,5 @@
 // Vendor
+import _ from 'lodash'
 import hmacSHA256 from 'crypto-js/hmac-sha256'
 
 // Custom
@@ -8,29 +9,37 @@ import { addUserBalanceResponse } from '../Stores/Api/ApiActions'
 
 module.exports = {
 
+	apiUrl() {
+		return 'https://api.quadrigacx.com/v2'
+	},
+
+	headers() {
+		return {
+			headers: {
+		        'Accept': 'application/json',
+		        'Content-Type': 'application/json'
+	    	}
+		}
+	}, 
+
 	get(url, params) {
 		var esc = encodeURIComponent;
 		var query = Object.keys(params)
 		    .map(key => esc(key) + '=' + esc(params[key]))
 		    .join('&');
 
-		return fetch(url + '?' + query, {
-			headers: {
-		        'Accept': 'application/json',
-		        'Content-Type': 'application/json'
-	    	}
-  		}).then((res) => res.json())
+		return fetch(url + '?' + query, this.headers()).then((res) => res.json())
 	},
 
 	post(url, body) {
-		return fetch('https://api.quadrigacx.com/v2/balance', {
-	      	headers: {
-	        	'Accept': 'application/json',
-	        	'Content-Type': 'application/json'
-	      	},
-			method: 'POST',
-			body: JSON.stringify(body)
-	    }).then((res) => res.json())
+		return fetch(this.apiUrl() + '/balance', 
+			_.assign({}, this.headers(), 
+				{
+					method: 'POST',
+					body: JSON.stringify(body)
+				}
+			)
+		).then((res) => res.json())
 	},
 
 	authPost(url, body) {
@@ -72,10 +81,6 @@ module.exports = {
 		})
 	},
 
-	getOpenOrders(book) {
-		return this.get('https://api.quadrigacx.com/public/orders?book=' + book)
-	},
-
 	getUserBalance() {
 		return this.authPost('https://api.quadrigacx.com/v2/balance', {})
 			.then((response) => {
@@ -101,7 +106,7 @@ module.exports = {
 		})
 	},
 
-	lookupOrder(id) {
+	getUserLookupOrder(id) {
 		return this.authPost('https://api.quadrigacx.com/v2/lookup_order', {
 			id
 		})
