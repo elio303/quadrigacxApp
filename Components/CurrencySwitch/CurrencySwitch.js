@@ -11,7 +11,11 @@ import StoreHelpers from '../../Stores/StoreHelpers'
 import HorizontalLine from '../General/HorizontalLine'
 import { setBookCurrency } from '../../Stores/General/GeneralActions'
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+	SwitchBox: {
+		maxHeight: 150,
+	}
+})
 
 export default class Balances extends Component{
 
@@ -19,7 +23,7 @@ export default class Balances extends Component{
 	constructor(props) {
 		super(props)
 		this.state = {
-			bookCurrency: StoreHelpers.getGeneralStore().bookCurrencies,
+			bookCurrency: StoreHelpers.getGeneralStore().bookCurrency,
 		}
 	}
 
@@ -68,7 +72,7 @@ export default class Balances extends Component{
 
 	render() {
 		return (
-			<View style={[GlobalStyles.box]}>
+			<View style={[GlobalStyles.box, styles.SwitchBox]}>
 				{this.Pickers()}
 			</View>
 		)
