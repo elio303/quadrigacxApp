@@ -17,6 +17,7 @@ import AppStore from './Stores/AppStore'
 import Login from './Components/Login/Login'
 import StoreHelpers from './Stores/StoreHelpers'
 import Balances from './Components/Balances/Balances'
+import CurrencySwitch from './Components/CurrencySwitch/CurrencySwitch'
 
 // Styles
 const styles = StyleSheet.create({
@@ -33,6 +34,10 @@ const styles = StyleSheet.create({
   spinner: {
     alignItems: 'center',
     justifyContent: 'center',
+  },
+
+  left: {
+    alignSelf: 'flex-start',
   },
 
 });
@@ -104,7 +109,8 @@ export default class Main extends Component {
       )
     }
     return (
-      <View>
+      <View style={styles.left}>
+        <CurrencySwitch />
         <Balances />
       </View>
     )

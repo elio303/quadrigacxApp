@@ -7,7 +7,6 @@ export default StyleSheet.create({
 	    margin: 10,
     	padding: 10,
     	borderRadius: 10,
-    	alignItems: 'center',
     	backgroundColor: 'white',
 	    justifyContent: 'space-between',
 	},

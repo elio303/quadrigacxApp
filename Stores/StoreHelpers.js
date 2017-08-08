@@ -11,6 +11,10 @@ export default {
 		return AppStore.getState().AuthStore
 	},
 
+	getGeneralStore() {
+		return AppStore.getState().GeneralStore
+	},
+
 	isAuthenticated() {
 		return !this.getApiStore().userBalanceResponse.error
 	}
